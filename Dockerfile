@@ -1,4 +1,4 @@
-# Usa l'immagine ufficiale di PHP con Nginx integrato
+# Usa l'immagine ufficiale di PHP con FPM
 FROM php:8.2-fpm
 
 # Installa Nginx
@@ -13,5 +13,11 @@ COPY . /var/www/html
 # Imposta la directory di lavoro
 WORKDIR /var/www/html
 
-# Avvia Nginx e PHP-FPM
-CMD service nginx start && php-fpm
+# Crea uno script per avviare Nginx e PHP-FPM in modo sicuro
+RUN echo '#!/bin/bash\n\
+service php8.2-fpm start && \
+nginx -g "daemon off;"' > /start.sh && \
+chmod +x /start.sh
+
+# Avvia lo script
+CMD ["/start.sh"]
