@@ -14,8 +14,8 @@ COPY . /var/www/html
 WORKDIR /var/www/html
 
 # Crea uno script per avviare Nginx e PHP-FPM in modo sicuro
+# (PHP-FPM si avvia automaticamente con l'immagine php:8.2-fpm)
 RUN echo '#!/bin/bash\n\
-service php8.2-fpm start && \
 nginx -g "daemon off;"' > /start.sh && \
 chmod +x /start.sh
 
