@@ -1,8 +1,10 @@
 # Usa l'immagine ufficiale di PHP con FPM
 FROM php:8.2-fpm
 
-# Installa Nginx
-RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
+# Installa Nginx e le dipendenze necessarie
+RUN apt-get update && apt-get install -y \
+    nginx \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copia la configurazione di Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
@@ -13,8 +15,7 @@ COPY . /var/www/html
 # Imposta la directory di lavoro
 WORKDIR /var/www/html
 
-# Crea uno script per avviare Nginx e PHP-FPM in modo sicuro
-# (PHP-FPM si avvia automaticamente con l'immagine php:8.2-fpm)
+# Crea uno script per avviare Nginx
 RUN echo '#!/bin/bash\n\
 nginx -g "daemon off;"' > /start.sh && \
 chmod +x /start.sh
